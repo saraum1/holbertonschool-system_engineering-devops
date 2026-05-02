@@ -1,0 +1,17 @@
+https://imgur.com/a/Dk1X016
+
+## 3. Scale Up Web Infrastructure Explanation
+
+### Why adding additional elements:
+
+*   **Load Balancer Cluster (HAproxy Cluster):** I added a second load balancer to create a high-availability cluster. This eliminates the Load Balancer as a Single Point of Failure (SPOF). If one fails, the other takes over immediately.
+*   **Split Components (Separation of Concerns):** I separated the Web Server, Application Server, and Database onto their own dedicated servers.
+    *   **Dedicated Web Server:** By separating the web server, it can focus entirely on handling HTTP requests and serving static content without competing for resources with the database.
+    *   **Dedicated Application Server:** This allows the app server to have all the CPU and RAM necessary to process complex business logic and code execution.
+    *   **Dedicated Database Server:** Databases are resource-intensive. Giving the database its own server prevents it from slowing down the web or app layers and allows for independent scaling and better security.
+*   **Additional Server:** Added to support the new distributed architecture and ensure that each tier has the resources it needs to handle high traffic and provide redundancy.
+
+### Benefits of this Infrastructure:
+*   **Scalability:** Each layer can now be scaled independently. For example, if we have high CPU usage in the app layer, we can add more app servers without affecting the database.
+*   **Performance:** No more "resource contention." The database won't slow down the web server because they are on different machines.
+*   **Reliability:** With a Load Balancer cluster, the entry point of the infrastructure is now highly available.
