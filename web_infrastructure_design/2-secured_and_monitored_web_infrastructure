@@ -1,0 +1,18 @@
+## 2. Secured and Monitored Web Infrastructure Explanation
+
+### Why adding additional elements:
+* **Firewalls (3):** Added to protect each server by filtering incoming and outgoing traffic, blocking unauthorized access.
+* **SSL Certificate (HTTPS):** Added to encrypt the data transmitted between the user and the server, ensuring privacy and security (HTTPS).
+* **Monitoring Clients (3):** Added to collect performance data and health metrics from each server to ensure everything is running correctly.
+
+### Specifics about the infrastructure:
+* **Firewalls:** Used to define security rules that allow only specific traffic (like HTTP/HTTPS) and block malicious attempts.
+* **HTTPS:** Used to prevent data interception (Man-in-the-Middle attacks) and build trust with users by securing their data.
+* **Monitoring:** Used to track server uptime, resource usage (CPU/RAM), and detect failures before they affect users.
+* **Data Collection:** The monitoring tool uses "Agents" or "Clients" installed on each server to collect logs and metrics, then sends them to a central service (like SumoLogic or Prometheus).
+* **Monitoring Web Server QPS:** To monitor Queries Per Second, I would configure the monitoring tool to parse the Web Server (Nginx) access logs and count the number of requests received per second.
+
+### Issues with this infrastructure:
+1. **SSL Termination at Load Balancer:** The traffic is encrypted from the user to the LB, but decrypted (Plain Text) from the LB to the web servers. This makes the internal network traffic vulnerable.
+2. **Single MySQL Write Node:** Having only one Primary database for "Writes" is a SPOF. If it fails, the application cannot save any new data.
+3. **Identical Components on All Servers:** Running the Web Server, App Server, and Database on the same machine causes "Resource Contention." If one component uses too much CPU, it slows down all others, making it harder to scale specific parts of the stack.
